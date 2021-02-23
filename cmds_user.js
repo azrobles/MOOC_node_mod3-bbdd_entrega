@@ -13,6 +13,7 @@ exports.help = (rl) =>
     > du | ud        ## user: delete
     >
     > lq | ql | q    ## quizzes: list all
+    > p              ## quizzes: play
     > cq | qc        ## quiz: create
     > tq | qt | t    ## quiz: test (play)
     > uq | qu        ## quiz: update

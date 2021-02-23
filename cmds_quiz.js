@@ -1,6 +1,13 @@
 
 const {User, Quiz} = require("./model.js").models;
 
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 // Show all quizzes in DB including <id> and <author>
 exports.list = async (rl) =>  {
 
@@ -81,5 +88,27 @@ exports.delete = async (rl) => {
   
   if (n===0) throw new Error(`  ${id} not in DB`);
   rl.log(`  ${id} deleted from DB`);
+}
+
+// Play a new round of quiz questions
+exports.play = async (rl) =>  {
+
+  let quizzes = await Quiz.findAll();
+
+  shuffle(quizzes);
+
+  let score = 0;
+  for (let quiz of quizzes) {
+    let answered = await rl.questionP(quiz.question);
+
+    if (answered.toLowerCase().trim() === quiz.answer.toLowerCase().trim()) {
+      rl.log(`  The answer "${answered}" is right!`);
+      score++;
+    } else {
+      rl.log(`  The answer "${answered}" is wrong!`);
+      break;
+    }
+  }
+  rl.log(`  Score: ${score}`);
 }
 
