@@ -78,6 +78,7 @@ Quiz.belongsToMany(User, {
 });
 
 Score.belongsTo(User, {
+  as: 'user',
   foreignKey: 'userId',
   onDelete: 'CASCADE'
 });
