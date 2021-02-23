@@ -1,5 +1,5 @@
 
-const {User, Quiz} = require("./model.js").models;
+const {User, Quiz, Score} = require("./model.js").models;
 
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -110,5 +110,13 @@ exports.play = async (rl) =>  {
     }
   }
   rl.log(`  Score: ${score}`);
+
+  let name = await rl.questionP("Enter user");
+  let user = await User.findOne({ where: { name } });
+  if (!user) {
+    user = await User.create({ name, age: 0 });
+  }
+  
+  await Score.create({ wins: score, userId: user.id });
 }
 
